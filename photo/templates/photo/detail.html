@@ -1,0 +1,23 @@
+{% extends "photo/base.html" %}
+{% block bb %}
+    <h1>{{photo.title}}</h1>
+    <h3>{{photo.content}}</h3>
+    {% if photo.image %}
+        <img src="{{photo.image.url}}" alt="{{photo.image}}"></img>
+    {% endif %}    
+    <p>{{photo.created_at}}</p>
+    <p>{{photo.updated_at}}</p>
+    <a href="{% url 'photos:update' photo.id %}">수정</a>
+    <a href="{% url 'photos:delete' photo.id %}">글삭제</a>
+    <hr>
+    
+    <form action="/photos/{{photo.id}}/comment/create/" method="post">
+        {% csrf_token %}
+        <input type="text" name="content"/>
+        <input type="submit" value="Submit"/>
+    </form>
+    
+    {% for comment in photo.comment_set.all %}
+    <h4>{{comment.content}}</h4>
+    {% endfor %}
+{% endblock %}
